@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Formulário Tipo de Escola</title>
+<link rel="stylesheet" href="css/style.css">
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<!-- Compiled and minified JavaScript -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js">
+	
+</script>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+</head>
+<body>
+	<header th:replace="fragments/padrao :: navbar"></header>
+	<div class="container">
+		<form method="post" action="salvarTipo">
+			<input type="hidden" name="id" th:value="${escolas?.id}" /> 
+			<label>Tipo de Escola</label>
+			<input type="text" placeholder="Tipo de Escola" required="required" name="nome"
+				th:value="${escolas?.nome}">
+			<label>Palavra Chave</label>
+			<input type="text" placeholder="Palavras Chave" required="required" name="palavrasChave"
+				th:value="${escolas?.palavrasChave}">
+			
+			<label>Descrição</label>
+			<input type="text" placeholder="Descrição" required="required" name="descricao"
+				th:value="${escolas?.descricao}">
+				
+			
+			<button class="btn waves-effect waves-light" type="submit">
+			
+				Salvar <i class="material-icons right">save</i>
+			</button>
+		</form>
+
+	</div>
+	
+</body>
+</html>

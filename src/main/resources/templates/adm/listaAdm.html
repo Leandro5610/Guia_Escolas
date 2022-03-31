@@ -2,22 +2,33 @@
 <html xmlns:th="http://thymeleaf.org">
 <head>
 <meta charset="utf-8">
+<link rel="stylesheet" >
 <title>Lista de Administradores</title>
 <style type="text/css">
-	.pagination{
-		position: absolute;
-		left: 45%;
-		top:90%;
-	}
+.pagination {
+	position: absolute;
+	left: 45%;
+	top: 75%;
+}
+.nav-wrapper {
+	background-color: blue;
+}
+.page-footer{
+	margin-top: 7%;
+	width:100%;
+	position:fixed;
+	background-color: blue !important;
+}
 </style>
 <link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" >
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
 </head>
 <body>
-<div th:replace="fragments/NavBar"></div>
+		<header th:replace="fragments/padrao :: navbar"></header>
 	<table class="striped">
 		<thead>
 			<tr>
@@ -30,20 +41,38 @@
 		</thead>
 		<tbody>
 			<tr th:each="adm:${admins}">
-				<td th:text= ${adm.id}>
-				<td th:text= ${adm.nome}>
-				<td th:text= ${adm.email}>
+				<td th:text=${adm.id}>
+				<td th:text=${adm.nome}>
+				<td th:text=${adm.email}>
 				<td><a th:href="@{/alterarAdm(id=${adm.id})}">Alterar</a></td>
 				<td><a th:href="@{/excluirAdm(id=${adm.id})}">Excluir</a></td>
 			</tr>
 		</tbody>
 	</table>
-	
+
 	<ul class="pagination">
-    <li th:class="${pageAtual == 1 ? 'disable' : ''}"><a th:href="${pageAtual > 1 ? pageAtual - 1 : '#'}"><i class="material-icons">chevron_left</i></a></li>
-	<li  th:each="p: ${numPages}"><a th:href="${p}	"><span th:text="${p}"></span></a></li>
-    <li th:class="${pageAtual == totalPaginas ? 'disable' : ''}"><a th:href="${pageAtual < totalPaginas  ? pageAtual + 1 : '#'}"><i class="material-icons">chevron_right</i></a></li>
-  </ul>
-  
+		<li th:class="${pageAtual == 1 ? 'disable' : ''}"><a
+			th:href="${pageAtual > 1 ? pageAtual - 1 : '#'}"><i
+				class="material-icons">chevron_left</i></a></li>
+
+		<li th:each="p : ${numPages}"
+			th:class="${paginaAtual == p ? 'active' : 'waves-effect'}">
+			<a th:href="${p}"> <span th:text="${p}"></span>
+		</a>
+		</li>
+
+		<li th:class="${pageAtual == totalPaginas ? 'disable' : ''}"><a
+			th:href="${pageAtual < totalPaginas  ? pageAtual + 1 : '#'}"><i
+				class="material-icons">chevron_right</i></a></li>
+	</ul>
+	<footer th:replace="fragments/padrao :: rodape"></footer>
+	<script th:inline="javascript">
+		var message = /*[[${mensagemErro}]]*/'default';
+		if (message != null)
+			alert(message);
+		var message = /*[[${mensagemOk}]]*/'default';
+		if (message != null)
+			alert(message);
+	</script>
 </body>
 </html>

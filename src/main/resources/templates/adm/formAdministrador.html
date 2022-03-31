@@ -1,35 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
 <head>
+<link rel="stylesheet" href="css/style.css">
 <meta charset="utf-8">
 <title>Formulário de Administrador</title>
 
-<style type="text/css">
-.Erro {
-	background-color: #ff4d4d;
-	width: 10%;
-	padding: 10px;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 1%;
-}
-
-.Ok {
-	margin-top: 5%;
-	background-color: #80ff80;
-	width: 10%;
-	padding: 10px;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 1%;
-}
-.page-footer{
-	margin-top: 23%;
-}
-
-
-
-</style>
 
 
 
@@ -39,50 +14,34 @@
 
 <!-- Compiled and minified JavaScript -->
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js">
+	
+	
+	</script>
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
 
 </head>
 <body>
-	<div th:replace="fragments/NavBar"></div>
-	
+	<header th:replace="fragments/padrao :: navbar"></header>
+	<div class="container">
 	<form method="post" action="salvarAdm">
-		<input type="hidden" name="id" th:value="${admins?.id}"/>
-		<label>Nome:</label> <input type="text" placeholder="Nome"
-			required="required" name="nome" th:value="${admins?.nome}"> 
-			<label>Email</label> 
-			<input type="email" placeholder="Email" required="required" name="email" th:value="${admins?.email}">
-		<label>Senha:</label> <input type="password" placeholder="senha"
-			required="required" name="senha" th:value="${admins?.senha}">
-		<button type="submit">Enviar</button>
+		<input type="hidden" name="id" th:value="${admins?.id}" /> <label>Nome:</label>
+		<input type="text" placeholder="Nome" required="required" name="nome"
+			th:value="${admins?.nome}"> <label>Email</label> <input
+			type="email" placeholder="Email" required="required" name="email"
+			th:value="${admins?.email}"> <label>Senha:</label> <input
+			type="password" placeholder="senha" name="senha">
+
+		<button class="btn waves-effect waves-light" type="submit"
+			name="action">
+			Salvar <i class="material-icons right">save</i>
+		</button>
 	</form>
-	<footer class="page-footer">
-          <div class="container">
-            <div class="row">
-              <div class="col l6 s12">
-                <h5 class="white-text">Footer Content</h5>
-                <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-              </div>
-              <div class="col l4 offset-l2 s12">
-                <h5 class="white-text">Links</h5>
-                <ul>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="footer-copyright">
-            <div class="container">
-            © 2014 Copyright Text
-            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
-            </div>
-          </div>
-        </footer>
-	<div th:replace="fragments/script"></div>
+
+	</div>
+	<footer th:replace="fragments/padrao :: rodape"></footer>
+	
 </body>
 </html>

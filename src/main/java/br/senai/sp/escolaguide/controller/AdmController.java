@@ -26,50 +26,73 @@ public class AdmController {
 	// enjetar dependencia
 	@Autowired
 	private AdmRepository repository;
-	
+
 	@RequestMapping("formAdm")
 	private String formAdm() {
 		return "adm/formAdministrador";
 	}
+
 	@RequestMapping(value = "salvarAdm", method = RequestMethod.POST)
 	private String salvarAdm(@Valid Adimistrador adm, BindingResult result, RedirectAttributes attr) {
-		//verifica se houve erro na validação do objeto
-		if(result.hasErrors()) {
-			attr.addFlashAttribute("mensagemErro","Verifique os campos");
+		// verifica se houve erro na validação do objeto
+		if (result.hasErrors()) {
+			attr.addFlashAttribute("mensagemErro", "Verifique os campos");
 			return "redirect:listarAdm/1";
 		}
-		try {
-		//salva o administrador
-		repository.save(adm);
-		attr.addFlashAttribute("mensagemOk","Administrador Cadastrado com Sucesso ID:"+adm.getId());
-		
-		}catch(Exception e){
-			attr.addFlashAttribute("mensagemErro","Ocorreu um Erro a cadastrar o Administrador");
+		// verifica se esta sendo feita uma alteração ao inves de inserção
+		boolean alteracao = adm.getId() != null ? true : false;
+
+		// verifica se senha esta vazia
+		if (adm.getSenha().equals(HashUtil.hash256(""))) {
+			// se não for altereção, eu defino a primeira parte doemail como senha
+			if (!alteracao) {
+				// extrai a parte do e-mail antes do @
+				String parte = adm.getEmail().substring(0, adm.getEmail().indexOf("@"));
+				// define a senha do admin
+				adm.setSenha(parte);
+			} else {
+				// busca a senha atual
+				String hash = repository.findById(adm.getId()).get().getSenha();
+				//seta a senha com hash
+				adm.setSenhaComHash(hash);
+			}
 		}
-		return "redirect:listarAdm/1";	
+
+		try {
+			// salva o administrador
+			repository.save(adm);
+			attr.addFlashAttribute("mensagemOk", "Administrador Cadastrado com Sucesso,  Caso a senha não foi informada no cadastro sera o email antes do @ ID:" + adm.getId());
+
+		} catch (Exception e) {
+			attr.addFlashAttribute("mensagemErro", "Ocorreu um Erro a cadastrar o Administrador");
+		}
+		return "redirect:listarAdm/1";
 	}
-	//resquest mapping para listar informando a pagina desejada
+
+	// resquest mapping para listar informando a pagina desejada
 	@RequestMapping("listarAdm/{page}")
-	public String listar(Model model,@PathVariable("page") int page) {
-		//cria um pageble co seis elementos por pagina ordenando os objetos pelo nome de forma ascendente
-		PageRequest pageble = PageRequest.of(page-1, 6, Sort.by(Sort.Direction.ASC,"nome"));
-		//cria a pagina atual atraves do repository
+	public String listar(Model model, @PathVariable("page") int page) {
+		// cria um pageble co seis elementos por pagina ordenando os objetos pelo nome
+		// de forma ascendente
+		PageRequest pageble = PageRequest.of(page - 1, 6, Sort.by(Sort.Direction.ASC, "nome"));
+		// cria a pagina atual atraves do repository
 		Page<Adimistrador> pagina = repository.findAll(pageble);
-		//descobrir o total de paginas
+		// descobrir o total de paginas
 		int totalPages = pagina.getTotalPages();
 		// cria uma lista de inteiros para representar as paginas
 		List<Integer> pageNumbers = new ArrayList<Integer>();
-		for(int i =0; i< totalPages; i++) {
-			pageNumbers.add(i+1);
+		for (int i = 0; i < totalPages; i++) {
+			pageNumbers.add(i + 1);
 		}
 		// adicoina as variaveis na model
 		model.addAttribute("admins", pagina.getContent());
 		model.addAttribute("pageAtual", page);
 		model.addAttribute("totalPaginas", totalPages);
 		model.addAttribute("numPages", pageNumbers);
-		//retornar para o HTML da lista
-		return"adm/listaAdm";
+		// retornar para o HTML da lista
+		return "adm/listaAdm";
 	}
+
 	@RequestMapping("alterarAdm")
 	public String alterarAdm(Model model, Long id) {
 		Adimistrador adm = repository.findById(id).get();

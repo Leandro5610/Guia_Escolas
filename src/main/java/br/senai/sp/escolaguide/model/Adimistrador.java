@@ -33,4 +33,9 @@ public class Adimistrador {
 		//aplicao o hash e seta a senha no objeto
 		this.senha = HashUtil.hash256(senha);
 	}
+	//metodo para setar a senha sem aplicar o hash
+	public void setSenhaComHash(String hash) {
+		//seta o hash na senha
+		this.senha = hash;
+	}
 }

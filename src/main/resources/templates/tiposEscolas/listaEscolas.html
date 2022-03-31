@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Lista de Escolas</title>
+<style type="text/css">
+.pagination {
+	position: absolute;
+	left: 45%;
+	top: 75%;
+}
+
+.nav-wrapper {
+	background-color: blue;
+}
+
+.page-footer {
+	margin-top: 7%;
+	width: 100%;
+	position: fixed;
+	background-color: blue !important;
+}
+
+.striped {
+	margin-top: 5%;
+}
+</style>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+</head>
+<body>
+	<header th:replace="fragments/padrao :: navbar"></header>
+	<div class="container">
+		<form method="get" action="/buscarChave">
+			<label>Buscar Tipo</label> <input type="search" name="palavrasChave">
+			
+			
+
+
+
+			<button>
+				Buscar <i class="material-icons right">send</i>
+			</button>
+		</form>
+		<form  method="get" action="/listarEscolas/1">
+<label for="elementos">Escolha a quantidade de elementos da
+				lista</label> <select id="selectTotal" name="totalElem"
+				onchange="changeSelect()">
+				<option value="-1">Selecione</option>
+				<option value="2">2</option>
+				<option value="4">4</option>
+				<option value="8">8</option>
+				<option value="16">16</option>
+			</select>
+		</form>
+
+		<table class="striped">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Nome</th>
+					<th>Descricao</th>
+					<th>Palavra Chave</th>
+					<th>Alterar</th>
+					<th>Excluir</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="e:${escolas}">
+					<td th:text=${e.id}>
+					<td th:text=${e.nome}>
+					<td th:text=${e.descricao}>
+					<td th:text=${e.palavrasChave}>
+					<td><a th:href="@{/alterarEscola(id=${e.id})}">Alterar</a></td>
+					<td><a th:href="@{/excluirEscola(id=${e.id})}">Excluir</a></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<ul class="pagination">
+			<li th:class="${paginaAtual == 1 ? 'disable' : ''}"><a
+				th:href="${paginaAtual > 1 ? paginaAtual - 1 : '#'}"><i
+					class="material-icons">chevron_left</i></a></li>
+
+			<li th:each="p : ${numPages}"
+				th:class="${paginaAtual == p ? 'active' : 'waves-effect'}"><a
+				th:href="${p}"> <span th:text="${p}"></span>
+			</a></li>
+
+			<li th:class="${paginaAtual == totalPaginas ? 'disable' : ''}"><a
+				th:href="${painaeAtual < totalPaginas  ? paginaAtual + 1 : '#'}"><i
+					class="material-icons">chevron_right</i></a></li>
+		</ul>
+
+	</div>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('select').formSelect();
+		});
+
+		function changeSelect(e) {
+			elementos = document.getElementById("selectTotal").value;
+			if (elementos != "-1"){
+				window.location = "/listarEscolas/" + elementos + "/1";
+			}
+		}
+	</script>
+
+</body>
+</html>
