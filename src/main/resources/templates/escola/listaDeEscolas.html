@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<table border="1">
+		<tr>
+		<th>Id</th>
+			<th>Nome</th>
+			<th>Descrição</th>
+			<th>Cep</th>
+			<th>Endereço</th>
+			<th>Numero</th>
+			<th>Bairro</th>
+			<th>Cidade</th>
+			<th>Estado</th>
+			<th>Complemento</th>
+			<th>Tipo</th>
+			<th>Telefone</th>
+			<th>Alterar</th>
+			<th>Excluir</th>
+				
+		</tr>
+		<tr th:each="e: ${escolas} ">
+			<td th:text="${e.id}"></td>
+			<td th:text="${e.nome}"></td>	
+			<td th:text="${e.descricao}"></td>
+			<td th:text="${e.cep}"></td>
+			<td th:text="${e.endereco} "></td>
+			<td th:text="${e.numero} "></td>
+			<td th:text="${e.bairro} "></td>
+			<td th:text="${e.cidade} "></td>
+			<td th:text="${e.estado} "></td>
+			<td th:text="${e.complemento} "></td>
+			<td th:text="${e.tipo.nome}"></td>
+			<td th:text="${e.telefone}"></td>
+			<td><a th:href="@{/alteraEscola(id=${e.id})}">Alterar</a></td>
+			<td><a th:href="@{/excluiEscola(id=${e.id})}">Excluir</a></td>
+			
+		</tr>
+		
+	</table>
+</body>
+</html>

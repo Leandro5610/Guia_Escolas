@@ -15,33 +15,35 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import br.senai.sp.escolaguide.model.TipoEscola;
+import br.senai.sp.escolaguide.model.Escola;
+import br.senai.sp.escolaguide.repository.EscolaRepository;
 import br.senai.sp.escolaguide.repository.TipoRepository;
 
 @Controller
-public class TipoController {
+public class EscolaController {
 	@Autowired
-	private TipoRepository repository;
-
-	@RequestMapping("formEscola")
-	private String formAdm() {
-		return "tiposEscolas/formTipo";
+	TipoRepository repository;
+	@Autowired
+	EscolaRepository esresp;
+	
+	@RequestMapping("formularioEscola")
+	private String form(Model model) {
+		model.addAttribute("tipos",repository.findAllByOrderByNomeAsc());
+		return "escola/form";
 	}
-
-	@RequestMapping(value = "salvarTipo", method = RequestMethod.POST)
-	private String salvarTipo(@Valid TipoEscola escola) {
-		repository.save(escola);
-		return "redirect:listarEscolas/20/1";
+	@RequestMapping(value = "salvarEscola", method = RequestMethod.POST)
+	private String salvarEscola(@Valid Escola escola) {
+		esresp.save(escola);
+		return "redirect:listagemEscolas/1";
 	}
-
-	@RequestMapping("listarEscolas/{totalElem}/{page}")
-	public String listar(Model model, @PathVariable("page") int page, @PathVariable("totalElem") int totalElem) {
+	@RequestMapping("listagemEscolas/{page}")
+	public String listarEscolas(Model model, @PathVariable("page") int page) {
 		
 		// cria um pageble co seis elementos por pagina ordenando os objetos pelo nome
 		// de forma ascendente
-		PageRequest pageble = PageRequest.of(page - 1,totalElem, Sort.by(Sort.Direction.ASC, "nome"));
+		PageRequest pageble = PageRequest.of(page - 1,10, Sort.by(Sort.Direction.ASC, "nome"));
 		// cria a pagina atual atraves do repository
-		Page<TipoEscola> pagina = repository.findAll(pageble);
+		Page<Escola> pagina = esresp.findAll(pageble);
 		// descobrir o total de paginas
 		int totalPages = pagina.getTotalPages();
 		// cria uma lista de inteiros para representar as paginas
@@ -53,34 +55,23 @@ public class TipoController {
 		model.addAttribute("escolas", pagina.getContent());
 		model.addAttribute("paginaAtual", page);
 		model.addAttribute("totalPaginas", totalPages);
-		model.addAttribute("totalElemento",totalElem);
 		model.addAttribute("numPages", pageNumbers);
 		
 
 		// retornar para o HTML da lista
-		return "tiposEscolas/listaEscolas";
+		return "escola/listaDeEscolas";
 	}
-
-	
-
-
-	@RequestMapping("alterarEscola")
-	public String alterarAdm(Model model, Long id) {
-		TipoEscola escola = repository.findById(id).get();
+	@RequestMapping("alteraEscola")
+	public String alterarEscola(Model model, Long id) {
+		Escola escola =	esresp.findById(id).get();
 		model.addAttribute("escolas", escola);
-		return "forward:formEscola";
+		return "forward:formularioEscola";
 	}
 
-	@RequestMapping("excluirEscola")
-	public String excluirAdm(Long id) {
-		repository.deleteById(id);
-		return "redirect:listarEscolas/20/1";
-	}
-
-	@RequestMapping("buscarChave")
-	public String buscarChave(String palavrasChave, Model model) {
-		model.addAttribute("escolas", repository.buscarKeyWord("%" + palavrasChave + "%"));
-		return "tiposEscolas/listaEscolas";
+	@RequestMapping("excluiEscola")
+	public String excluirEscola(Long id) {
+		esresp.deleteById(id);
+		return "redirect:listagemEscolas/1";
 	}
 
 }

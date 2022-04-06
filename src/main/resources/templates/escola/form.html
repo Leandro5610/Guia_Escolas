@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<style type="text/css">
+
+
+	
+</style>
+<title>Escola</title>
+</head>
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    
+<body>
+<div class="container"> 
+	<form method="post" action="salvarEscola">
+		<!--  input type="hidden" name="id" />-->
+		 <label>Nome da Escola</label> 
+			<input type="text" placeholder="" required="required"
+			name="nome"> 
+			<label>Descrição</label> <input type="text"
+			placeholder="" required="required" name="descricao"> 
+			<label>Cep</label>
+			 <input type="text" placeholder="" required="required" name="cep" id="cep"> 
+			<label>Endereço</label> <input
+			type="text" placeholder="" required="required" name="endereco" id="logradouro"> 
+		
+			<label>Bairro</label> <input
+			type="text" placeholder="" required="required" name="bairro" id="bairro"> 
+			<label>Cidade</label> <input
+			type="text" placeholder="" required="required" name="cidade"	id="localidade"> 
+			<label>Estado</label> <input
+			type="text" placeholder="" required="required" name="estado" id="uf"> 
+			<label>Complemento</label>
+				<input type="text" placeholder="" required="required" name="complemento"> 
+			<label>Numero</label> 
+			<input
+			type="text" placeholder="" required="required" name="numero"> 
+	
+			<label>Telefone</label>
+		<input type="text" placeholder="" required="required" name="telefone"> 
+			<label>Selecione Tipo de Escola</label>
+			 <select class="browser-default" name="tipo.id">
+			<option th:each="t: ${tipos}" th:text="${t.nome}" th:value="${t.id}"></option>
+		</select>
+	
+	<div class="row">
+    	 <p>
+      <label>
+        <input type="checkbox" class="filled-in"  name="cantina"  />
+        <span>Cantina</span>
+      </label>
+    </p>
+    </div>
+        
+     <div class="row">
+     <p>
+     	 <label>
+        <input type="checkbox" class="filled-in" name="wifi"/>
+        <span>WI-FI</span>
+      </label>
+    </p>
+     </div>
+   
+  	  <div class="file-field input-field">
+      <div class="btn">
+        <span>Fotos</span>
+        <input type="file" multiple>
+      </div>
+      <div class="file-path-wrapper">
+        <input class="file-path validate" type="text" placeholder="Upload one or more files">
+      </div>
+    </div>
+		<br>
+		<button class="btn waves-effect waves-light" type="submit">
+		
+			Salvar <i class="material-icons right">save</i>
+		</button>
+	</form>
+
+	</div>
+	<script src="/script/cep.js"></script>
+</body>
+</html>
