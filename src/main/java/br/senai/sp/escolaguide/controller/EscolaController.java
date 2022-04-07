@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.senai.sp.escolaguide.model.Escola;
 import br.senai.sp.escolaguide.repository.EscolaRepository;
@@ -32,9 +34,11 @@ public class EscolaController {
 		return "escola/form";
 	}
 	@RequestMapping(value = "salvarEscola", method = RequestMethod.POST)
-	private String salvarEscola(@Valid Escola escola) {
-		esresp.save(escola);
-		return "redirect:listagemEscolas/1";
+	private String salvarEscola(@Valid Escola escola, @RequestParam("fileFotos") MultipartFile[] fileFotos) {
+		
+		//esresp.save(escola);//
+		System.out.println(fileFotos.length);
+		return "redirect:formularioEscola";
 	}
 	@RequestMapping("listagemEscolas/{page}")
 	public String listarEscolas(Model model, @PathVariable("page") int page) {
