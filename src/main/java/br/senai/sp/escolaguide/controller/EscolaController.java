@@ -1,5 +1,6 @@
 package br.senai.sp.escolaguide.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,14 +21,16 @@ import org.springframework.web.multipart.MultipartFile;
 import br.senai.sp.escolaguide.model.Escola;
 import br.senai.sp.escolaguide.repository.EscolaRepository;
 import br.senai.sp.escolaguide.repository.TipoRepository;
+import br.senai.sp.escolaguide.util.FirebaseUtil;
 
 @Controller
 public class EscolaController {
 	@Autowired
-	TipoRepository repository;
+	private	TipoRepository repository;
 	@Autowired
-	EscolaRepository esresp;
-	
+	private EscolaRepository esresp;
+	@Autowired
+	private FirebaseUtil fireBase;
 	@RequestMapping("formularioEscola")
 	private String form(Model model) {
 		model.addAttribute("tipos",repository.findAllByOrderByNomeAsc());
@@ -35,8 +38,25 @@ public class EscolaController {
 	}
 	@RequestMapping(value = "salvarEscola", method = RequestMethod.POST)
 	private String salvarEscola(@Valid Escola escola, @RequestParam("fileFotos") MultipartFile[] fileFotos) {
-		
-		//esresp.save(escola);//
+		//String para a url das fotos
+		String fotos ="";
+		//percorrer cada arquivo de foi submetido no form
+		for(MultipartFile arquivo : fileFotos) {
+			// verficar se arquivo esa vazio
+			if(arquivo.getOriginalFilename().isEmpty()) {
+				//vai pro proximo arquivo
+				continue;
+			}
+			//faz o upload para a numvem e obtem a url gerada
+			try {
+				fotos+= fireBase.uploadFile(arquivo)+";";
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+		}
+		escola.setFotos(fotos);
+		esresp.save(escola);
 		System.out.println(fileFotos.length);
 		return "redirect:formularioEscola";
 	}
@@ -75,7 +95,23 @@ public class EscolaController {
 	@RequestMapping("excluiEscola")
 	public String excluirEscola(Long id) {
 		esresp.deleteById(id);
+		
 		return "redirect:listagemEscolas/1";
+	}
+	@RequestMapping("excluirFotoEscola")
+	public String excluiFoto(Long idEscola, int numFoto, Model model) {
+		//busca a Escola no banco
+		Escola esc = esresp.findById(idEscola).get();
+		//pegar a string da foto que vai ser excluida
+		String fotoUrl = esc.verFotos()[numFoto];
+		//excluir do firebase
+		fireBase.removeFile(fotoUrl);
+		// arranca a foto da string fotos
+		esc.setFotos(esc.getFotos().replace(fotoUrl+";", ""));
+		// salva no BD o objeto esc
+		esresp.save(esc);
+		model.addAttribute("escolas", esc);
+		return"forward:formularioEscola";
 	}
 
 }

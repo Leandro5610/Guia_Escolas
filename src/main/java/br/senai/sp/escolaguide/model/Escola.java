@@ -32,4 +32,8 @@ public class Escola {
 	private boolean cantina;
 	private String telefone;
 	private boolean wifi;
+	
+	public String[] verFotos() {
+		return this.fotos.split(";");
+	}
 }

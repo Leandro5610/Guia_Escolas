@@ -28,6 +28,7 @@
 			<th>Telefone</th>
 			<th>Cantina </th>
 			<th>WIFI</th>
+			<th >Fotos</th>
 			<th>Alterar</th>
 			<th>Excluir</th>
 				
@@ -47,8 +48,12 @@
 			<td th:text="${e.telefone}"></td>
 			<td th:text="${e.cantina}"></td>
 			<td th:text="${e.wifi}"></td>
+			<td style="display: flex !important"><img style="width: 150px;" th:each="a: ${e.verFotos()}" th:src="${a}"	></td>
 			<td><a th:href="@{/alteraEscola(id=${e.id})}">Alterar</a></td>
 			<td><a th:href="@{/excluiEscola(id=${e.id})}">Excluir</a></td>
+			
+		</tr>
+		<tr >
 			
 		</tr>
 		

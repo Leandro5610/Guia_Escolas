@@ -2,82 +2,99 @@
 <html xmlns:th="http://thymeleaf.org">
 <head>
 <meta charset="utf-8">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    
+<!-- Compiled and minified JavaScript -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+
 <title>Escola</title>
 </head>
 <body>
-<div class="container"> 
-	<form method="post" action="salvarEscola" enctype="multipart/form-data" accept-charset="utf-8">
-		  <input type="hidden" name="id" th:value="${escolas?.id}">
-		 <label>Nome da Escola</label> 
+	<div class="container">
+		<form method="post" action="salvarEscola"
+			enctype="multipart/form-data" accept-charset="utf-8">
+			<input type="hidden" name="id" th:value="${escolas?.id}"> <label>Nome
+				da Escola</label> <input type="text" placeholder="" required="required"
+				name="nome" th:value="${escolas?.nome}"> <label>Descrição</label>
 			<input type="text" placeholder="" required="required"
-			name="nome" th:value="${escolas?.nome}"> 
-			<label>Descrição</label> 
-			<input type="text" placeholder="" required="required" name="descricao" th:value="${escolas?.descricao}"> 
-			<label>Cep</label>
-			 <input type="text" placeholder=""  required="required" name="cep" id="cep" th:value="${escolas?.cep}"> 
-			<label>Endereço</label> <input
-			type="text" placeholder="" required="required" name="endereco" id="logradouro" th:value="${escolas?.endereco}" readonly="readonly"> 
-		
-			<label>Bairro</label> <input type="text" placeholder="" required="required" name="bairro" id="bairro" th:value="${escolas?.bairro}" readonly="readonly"> 
-			<label>Cidade</label> 
-			<input type="text" placeholder="" required="required" name="cidade"	id="localidade" th:value="${escolas?.cidade}" readonly="readonly"> 
-			<label>Estado</label> <input
-			type="text" placeholder="" required="required" name="estado" id="uf" th:value="${escolas?.estado}" readonly="readonly"> 
-			<label>Complemento</label>
-				<input type="text" placeholder="" required="required" name="complemento" th:value="${escolas?.complemento}"> 
-			<label>Numero</label> 
-			<input
-			type="text" placeholder="" required="required" name="numero" th:value="${escolas?.numero}"> 
-	
-			<label>Telefone</label>
-		<input type="text" placeholder="" required="required" name="telefone" th:value="${escolas?.telefone}"> 
-			<label>Selecione Tipo de Escola</label>
-			 <select class="browser-default" name="tipo.id">
-			<option th:each="t: ${tipos}" th:text="${t.nome}" th:value="${t.id}" th:selected="${t.id == escolas?.tipo?.id}"></option>
-		</select>
-	
-	<div class="row">
-    	 <p>
-      <label>
-        <input type="checkbox" class="filled-in"  name="cantina"  />
-        <span>Cantina</span>
-      </label>
-    </p>
-    </div>
-        
-     <div class="row">
-     <p>
-     	 <label>
-        <input type="checkbox" class="filled-in" name="wifi"/>
-        <span>WI-FI</span>
-      </label>
-    </p>
-     </div>
-   
-  	  <div class="file-field input-field">
-      <div class="btn">
-        <span>Fotos</span>
-        <input type="file" multiple name="fileFotos" accept="image/*">
-      </div>
-      <div class="file-path-wrapper">
-        <input class="file-path validate" type="text" placeholder="Upload one or more files">
-      </div>
-    </div>
-		<br>
-		<button class="btn waves-effect waves-light" type="submit">
-		
-			Salvar <i class="material-icons right">save</i>
-		</button>
-	</form>
+				name="descricao" th:value="${escolas?.descricao}"> <label>Cep</label>
+			<input type="text" placeholder="" required="required" name="cep"
+				id="cep" th:value="${escolas?.cep}"> <label>Endereço</label>
+			<input type="text" placeholder="" required="required" name="endereco"
+				id="logradouro" th:value="${escolas?.endereco}" readonly="readonly">
+
+			<label>Bairro</label> <input type="text" placeholder=""
+				required="required" name="bairro" id="bairro"
+				th:value="${escolas?.bairro}" readonly="readonly"> <label>Cidade</label>
+			<input type="text" placeholder="" required="required" name="cidade"
+				id="localidade" th:value="${escolas?.cidade}" readonly="readonly">
+			<label>Estado</label> <input type="text" placeholder=""
+				required="required" name="estado" id="uf"
+				th:value="${escolas?.estado}" readonly="readonly"> <label>Complemento</label>
+			<input type="text" placeholder="" required="required"
+				name="complemento" th:value="${escolas?.complemento}"> <label>Numero</label>
+			<input type="text" placeholder="" required="required" name="numero"
+				th:value="${escolas?.numero}"> <label>Telefone</label> <input
+				type="text" placeholder="" required="required" name="telefone"
+				th:value="${escolas?.telefone}"> <label>Selecione
+				Tipo de Escola</label> <select class="browser-default" name="tipo.id">
+				<option th:each="t: ${tipos}" th:text="${t.nome}" th:value="${t.id}"
+					th:selected="${t.id == escolas?.tipo?.id}"></option>
+			</select>
+
+			<div class="row">
+				<p>
+					<label> <input type="checkbox" class="filled-in"
+						name="cantina" th:checked=${escolas?.cantina} /> <span>Cantina</span>
+					</label>
+				</p>
+			</div>
+
+			<div class="row">
+				<p>
+					<label> <input type="checkbox" class="filled-in"
+						name="wifi" th:checked=${escolas?.wifi} /> <span>WI-FI</span>
+					</label>
+				</p>
+			</div>
+
+			<div class="file-field input-field">
+				<div class="btn">
+					<span>Fotos</span> <input type="file" multiple name="fileFotos"
+						accept="image/*">
+				</div>
+				<div class="file-path-wrapper">
+					<input class="file-path validate" type="text"
+						placeholder="Upload one or more files">
+				</div>
+			</div>
+			<div th:if="${escolas?.fotos?.length > 0}">
+				<h6>Fotos Cadastradas</h6>
+				<div>
+					<ul>
+						<li th:each="foto, i : ${escolas?.verFotos()}"><img
+							th:src="${foto}" width="100px"> <a
+							th:href="@{/excluirFotoEscola(idEscola =${escolas.id}, numFoto= ${i.index})}">
+								<i class="material-icons">delete-forever</i>
+						</a></li>
+
+					</ul>
+				</div>
+			</div>
+
+			<br>
+			<button class="btn waves-effect waves-light" type="submit">
+
+				Salvar <i class="material-icons right">save</i>
+			</button>
+		</form>
 
 	</div>
 	<script src="/script/cep.js"></script>
-		
+
 </body>
 </html>
