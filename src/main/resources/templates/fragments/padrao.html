@@ -4,16 +4,21 @@
 <meta charset="utf-8">
 <title>Html Padrão</title>
 </head>
+
+
 <body> 
 <header th:fragment="navbar">
 	<nav>
 		<div class="nav-wrapper">
 			<a href="#" class="brand-logo">Logo</a>
-			<ul id="nav-mobile" class="right hide-on-med-and-down">
-				<li><a href="/formAdm">Form</a></li>
-				<li><a href="/formEscola">Form Escola</a></li>
-				<li><a href="/listarEscolas/20/1">Lista de Escola</a></li>
-				<li><a href="/listarAdm/1">Lista</a></li>
+			<ul  id="nav-mobile" class="right hide-on-med-and-down" th:if="${session.admLogado != null}">
+				<li class="link"><a href="/formAdm">Form</a></li>
+				<li><a href="listagemEscolas/1"></a></li>
+				<li><a href="/formEscola">Lista de Escolas</a></li>
+				<li><a href="/listarEscolas/20/1">Lista  Tipo Escola</a></li>
+				<li><a href="/listarAdm/1">Lista Adm</a></li>
+				<li><a href="/logout"><i class="material-icons">exit_to_app</i></a></li>
+				
 				
 			</ul>
 		</div>

@@ -3,6 +3,8 @@ package br.senai.sp.escolaguide.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.senai.sp.escolaguide.annotation.Publico;
 import br.senai.sp.escolaguide.model.Adimistrador;
 import br.senai.sp.escolaguide.repository.AdmRepository;
 import br.senai.sp.escolaguide.util.HashUtil;
@@ -104,5 +107,27 @@ public class AdmController {
 	public String excluirAdm(Long id) {
 		repository.deleteById(id);
 		return "redirect:listarAdm/1";
+	}
+	@Publico
+	@RequestMapping("login")
+	public String login(Adimistrador adm , RedirectAttributes attr, HttpSession session) {
+		// buscar o adm no banco de dados atraves do email e  senha
+		Adimistrador admin = repository.findByEmailAndSenha(adm.getEmail(),adm.getSenha());
+		if(admin == null) {
+			//avisa o usuario
+			attr.addFlashAttribute("mensagemLogin", "Login ou senha errados");
+			return "redirect:/";
+		}else {
+			//se existir salva a sessão e acessa o sitema
+			session.setAttribute("admLogado", admin);
+			return"redirect:/listagemEscolas/1";
+		}
+		
+	}
+	
+	@RequestMapping("logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/";
 	}
 }

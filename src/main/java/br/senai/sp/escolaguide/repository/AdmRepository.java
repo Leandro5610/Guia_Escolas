@@ -6,4 +6,5 @@ import br.senai.sp.escolaguide.model.Adimistrador;
 
 public interface AdmRepository extends PagingAndSortingRepository<Adimistrador, Long>{
 	
+	public Adimistrador findByEmailAndSenha(String email, String senha); 
 }

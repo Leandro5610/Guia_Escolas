@@ -70,6 +70,8 @@
 				<div class="file-path-wrapper">
 					<input class="file-path validate" type="text"
 						placeholder="Upload one or more files">
+						<!-- input para alterar foto no backend -->>
+						<input type="hidden" th:value="${escolas?.fotos}" name="fotos">
 				</div>
 			</div>
 			<div th:if="${escolas?.fotos?.length > 0}">

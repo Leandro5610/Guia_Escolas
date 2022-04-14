@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.senai.sp.escolaguide.model.Adimistrador;
 import br.senai.sp.escolaguide.model.Escola;
 import br.senai.sp.escolaguide.repository.EscolaRepository;
 import br.senai.sp.escolaguide.repository.TipoRepository;
@@ -31,6 +32,8 @@ public class EscolaController {
 	private EscolaRepository esresp;
 	@Autowired
 	private FirebaseUtil fireBase;
+	
+	
 	@RequestMapping("formularioEscola")
 	private String form(Model model) {
 		model.addAttribute("tipos",repository.findAllByOrderByNomeAsc());
@@ -39,7 +42,7 @@ public class EscolaController {
 	@RequestMapping(value = "salvarEscola", method = RequestMethod.POST)
 	private String salvarEscola(@Valid Escola escola, @RequestParam("fileFotos") MultipartFile[] fileFotos) {
 		//String para a url das fotos
-		String fotos ="";
+		String fotos =escola.getFotos();
 		//percorrer cada arquivo de foi submetido no form
 		for(MultipartFile arquivo : fileFotos) {
 			// verficar se arquivo esa vazio
@@ -94,8 +97,13 @@ public class EscolaController {
 
 	@RequestMapping("excluiEscola")
 	public String excluirEscola(Long id) {
-		esresp.deleteById(id);
-		
+		Escola esc = esresp.findById(id).get();
+		if(esc.getFotos().length() > 0){
+		for (String foto :esc.verFotos()) {
+			fireBase.removeFile(foto);
+		}
+			}
+		esresp.delete(esc);
 		return "redirect:listagemEscolas/1";
 	}
 	@RequestMapping("excluirFotoEscola")
@@ -113,5 +121,6 @@ public class EscolaController {
 		model.addAttribute("escolas", esc);
 		return"forward:formularioEscola";
 	}
+	
 
 }

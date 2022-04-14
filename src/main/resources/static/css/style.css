@@ -33,5 +33,16 @@
 	left: 45%;
 	top: 90%;
 }
+.header{
+		background-color: blue !important;
+}
+
+.container{
+font-family: 'Akshar', sans-serif;
+width:25%;
+margin-top: 10%;
+display: fixed;
+}
+
 
 
