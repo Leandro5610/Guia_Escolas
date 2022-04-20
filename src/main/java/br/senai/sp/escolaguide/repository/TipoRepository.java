@@ -13,5 +13,6 @@ public interface TipoRepository extends PagingAndSortingRepository<TipoEscola, L
 @Query("SELECT e FROM TipoEscola e WHERE  e.palavrasChave LIKE %:p%")	
 public List<TipoEscola> buscarKeyWord(@Param("p") String palavrasChave);
 
+
 public List<TipoEscola> findAllByOrderByNomeAsc();
 }

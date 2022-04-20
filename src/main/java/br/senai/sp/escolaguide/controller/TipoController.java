@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -73,8 +74,14 @@ public class TipoController {
 
 	@RequestMapping("excluirEscola")
 	public String excluirAdm(Long id) {
-		repository.deleteById(id);
+		try {
+	        repository.deleteById(id);
+	    } catch (org.springframework.dao.DataIntegrityViolationException e) {
+	        throw new RuntimeException("Não é possível excluir uma categoria que possui produtos");
+	    }
+		
 		return "redirect:listarEscolas/20/1";
+		
 	}
 
 	@RequestMapping("buscarChave")
