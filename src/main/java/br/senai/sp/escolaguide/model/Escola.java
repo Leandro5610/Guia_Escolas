@@ -1,11 +1,14 @@
 package br.senai.sp.escolaguide.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.Data;
 
@@ -32,7 +35,8 @@ public class Escola {
 	private boolean cantina;
 	private String telefone;
 	private boolean wifi;
-	
+	@OneToMany(mappedBy = "esc")
+	private List<Avaliacao> avalicoes;
 	public String[] verFotos() {
 		return this.fotos.split(";");
 	}
